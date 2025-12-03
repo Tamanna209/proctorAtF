@@ -394,14 +394,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { createSession } from "../api/auth";
 import { useNavigate } from "react-router-dom";
@@ -555,54 +547,52 @@ export default function StartTest() {
 
       <div className="w-full max-w-2xl">
         <div className="backdrop-blur-2xl bg-white/60 dark:bg-slate-900/80 border border-cyan-200/60 dark:border-cyan-500/20 rounded-3xl shadow-2xl p-6 sm:p-10 transition-all">
-
-             <div className="text-center mb-8">
-             <h1 className="text-3xl sm:text-4xl font-bold bg-linear-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400 bg-clip-text text-transparent mb-3">
-               Ready to Start?
-             </h1>
-             <p className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">
-               Make sure you have a quiet space and stable internet connection
-             </p>
-           </div>
-
-           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-             <div className="backdrop-blur-lg bg-cyan-500/10 dark:bg-cyan-400/10 border border-cyan-200/40 dark:border-cyan-500/20 rounded-xl p-4 hover:border-cyan-300/60 dark:hover:border-cyan-500/40 transition-all">
-               <div className="text-3xl mb-2">⏱️</div>
-               <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                 Duration
-               </p>
-               <p className="text-xl font-bold text-cyan-600 dark:text-cyan-400">
-                 15 mins
-               </p>
-             </div>
-             <div className="backdrop-blur-lg bg-blue-500/10 dark:bg-blue-400/10 border border-blue-200/40 dark:border-blue-500/20 rounded-xl p-4 hover:border-blue-300/60 dark:hover:border-blue-500/40 transition-all">
-               <div className="text-3xl mb-2">📷 </div>
-               <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                 Requirements
-               </p>
-               <p className="text-sm font-bold text-blue-600 dark:text-blue-400">
-                 Camera & Mic
-               </p>
-             </div>
-             <div className="backdrop-blur-lg bg-amber-500/10 dark:bg-amber-400/10 border border-amber-200/40 dark:border-amber-500/20 rounded-xl p-4 hover:border-amber-300/60 dark:hover:border-amber-500/40 transition-all">
-               <div className="text-3xl mb-2">⚠️</div>
-               <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                 Rules
-               </p>
-               <p className="text-sm font-bold text-amber-600 dark:text-amber-400">
-                 No tab switch
-               </p>
-             </div>
-           </div>
-
-           <div className="bg-yellow-50/80 dark:bg-yellow-900/20 border border-yellow-200/60 dark:border-yellow-700/40 rounded-xl p-4 mb-8">
-             <p className="text-sm font-medium text-yellow-800 dark:text-yellow-300">
-               <strong>Important:</strong> Cheating detection is active. Any
-               suspicious activity (tab switch, camera off, minimize) will result
-               in blocking.
-             </p>
+          <div className="text-center mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold bg-linear-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400 bg-clip-text text-transparent mb-3">
+              Ready to Start?
+            </h1>
+            <p className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">
+              Make sure you have a quiet space and stable internet connection
+            </p>
           </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div className="backdrop-blur-lg bg-cyan-500/10 dark:bg-cyan-400/10 border border-cyan-200/40 dark:border-cyan-500/20 rounded-xl p-4 hover:border-cyan-300/60 dark:hover:border-cyan-500/40 transition-all">
+              <div className="text-3xl mb-2">⏱️</div>
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Duration
+              </p>
+              <p className="text-xl font-bold text-cyan-600 dark:text-cyan-400">
+                15 mins
+              </p>
+            </div>
+            <div className="backdrop-blur-lg bg-blue-500/10 dark:bg-blue-400/10 border border-blue-200/40 dark:border-blue-500/20 rounded-xl p-4 hover:border-blue-300/60 dark:hover:border-blue-500/40 transition-all">
+              <div className="text-3xl mb-2">📷 </div>
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Requirements
+              </p>
+              <p className="text-sm font-bold text-blue-600 dark:text-blue-400">
+                Camera & Mic
+              </p>
+            </div>
+            <div className="backdrop-blur-lg bg-amber-500/10 dark:bg-amber-400/10 border border-amber-200/40 dark:border-amber-500/20 rounded-xl p-4 hover:border-amber-300/60 dark:hover:border-amber-500/40 transition-all">
+              <div className="text-3xl mb-2">⚠️</div>
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Rules
+              </p>
+              <p className="text-sm font-bold text-amber-600 dark:text-amber-400">
+                No tab switch
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-yellow-50/80 dark:bg-yellow-900/20 border border-yellow-200/60 dark:border-yellow-700/40 rounded-xl p-4 mb-8">
+            <p className="text-sm font-medium text-yellow-800 dark:text-yellow-300">
+              <strong>Important:</strong> Cheating detection is active. Any
+              suspicious activity (tab switch, camera off, minimize) will result
+              in blocking.
+            </p>
+          </div>
 
           <button
             onClick={handleStart}
@@ -611,7 +601,6 @@ export default function StartTest() {
           >
             {loading ? "Starting Test..." : "Start Test"}
           </button>
-
         </div>
       </div>
     </div>
