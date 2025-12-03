@@ -82,7 +82,7 @@ export const useAdvancedProctoring = (onSuspiciousActivity) => {
     // 6. KEYBOARD SHORTCUTS - Block F12, Ctrl+Shift+I, etc.
     const handleKeyDown = (e) => {
       // F12 - Developer Tools
-      if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+      if (e.key === "F12") {
         e.preventDefault();
         if (!suspiciousActivityRef.current) {
           suspiciousActivityRef.current = true;
