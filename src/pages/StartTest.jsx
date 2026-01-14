@@ -482,6 +482,18 @@ export default function StartTest() {
       localStorage.setItem("SESSION_TOKEN", token);
       setSessionToken(token);
 
+      // Request fullscreen as part of the user's click (allowed by browsers)
+      try {
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) await elem.requestFullscreen();
+        else if (elem.webkitRequestFullscreen)
+          await elem.webkitRequestFullscreen();
+        else if (elem.mozRequestFullScreen) await elem.mozRequestFullScreen();
+        else if (elem.msRequestFullscreen) await elem.msRequestFullscreen();
+      } catch (fsErr) {
+        console.warn("Fullscreen request failed on StartTest click:", fsErr);
+      }
+
       // API check
       const statusRes = await checkAttemptApi(token);
 
