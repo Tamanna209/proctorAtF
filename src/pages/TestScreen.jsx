@@ -375,20 +375,51 @@ export default function TestScreen() {
       setBlockedReason(`⚠️ Suspicious Activity Detected: ${details}`);
       addToast(`Test Blocked: ${details}`, "error", 0);
 
-      // Try to report the proctor event and submit the test. Regardless of
-      // network success, remove local session token and redirect to blocked
-      // to prevent the user from refreshing and re-entering the test.
-      try {
-        if (token && uid) {
-          await sendProctorEvent(token, {
-            userId: uid,
-            eventType,
-            details,
-            timestamp: new Date().toISOString(),
-          });
+      // Helper: send proctor event with retries and return whether server blocked
+      const sendWithRetries = async (attempts = 3) => {
+        const payload = {
+          userId: uid,
+          eventType,
+          details,
+          timestamp: new Date().toISOString(),
+        };
+
+        for (let i = 0; i < attempts; i++) {
+          try {
+            const res = await sendProctorEvent(token, payload);
+            // If server responded successfully (200), it logged the event but didn't block
+            return { blocked: false, resp: res };
+          } catch (err) {
+            // If server returned 403, it's intentionally blocking the user
+            if (err?.response?.status === 403) {
+              return { blocked: true, resp: err.response };
+            }
+            // otherwise network error — wait and retry
+            const backoff = 500 * (i + 1);
+            await new Promise((r) => setTimeout(r, backoff));
+          }
         }
 
-        // Auto-submit after short delay to record answers (best-effort)
+        // All retries failed
+        return { blocked: null };
+      };
+
+      const result = await sendWithRetries(3);
+
+      // If server confirms blocking, clear session and redirect to blocked
+      if (result.blocked === true) {
+        try {
+          localStorage.removeItem("SESSION_TOKEN");
+          localStorage.removeItem("USER_ID");
+        } catch (e) {
+          /* ignore */
+        }
+        setTimeout(() => (window.location.href = "/blocked"), 800);
+        return;
+      }
+
+      // If server logged event but didn't block, still attempt to auto-submit
+      if (result.blocked === false) {
         setTimeout(() => {
           try {
             doSubmit();
@@ -396,22 +427,16 @@ export default function TestScreen() {
             console.warn("Auto-submit failed:", e);
           }
         }, 1200);
-      } catch (e) {
-        console.warn("Failed to report blocking event:", e);
-      } finally {
-        // Ensure user cannot refresh back into the test — clear session and go to blocked page
-        try {
-          localStorage.removeItem("SESSION_TOKEN");
-          localStorage.removeItem("USER_ID");
-        } catch (e) {
-          /* ignore */
-        }
-
-        // give a short moment so UI shows the blocked message then redirect
-        setTimeout(() => {
-          window.location.href = "/blocked";
-        }, 1500);
+        // Keep the blocked UI as a warning but do not clear session (server didn't block)
+        return;
       }
+
+      // If we couldn't reach the server after retries, show persistent message
+      addToast(
+        "Unable to notify server about suspicious activity. Please check your connection.",
+        "error",
+        5000
+      );
     },
     // depend on sessionToken/userId so callback updates if tokens change
     [sessionToken, userId, addToast]
